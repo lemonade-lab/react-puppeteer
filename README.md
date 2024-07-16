@@ -26,10 +26,10 @@ export class Image extends Picture {
         this.Pup.start()
     }
     /**
-     * 
-     * @param uid 
-     * @param Props 
-     * @returns 
+     *
+     * @param uid
+     * @param Props
+     * @returns
      */
     createHello(uid: number, Props: PropsType) {
         // 生成 html 地址 或 html字符串

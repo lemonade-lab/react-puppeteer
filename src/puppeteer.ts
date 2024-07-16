@@ -13,8 +13,7 @@ export class Puppeteer {
   #restart = 200
   // 状态
   #isBrowser = false
-  
-  
+
   // 配置
   #launch: PuppeteerLaunchOptions = PuppeteerLunchConfig.all()
 

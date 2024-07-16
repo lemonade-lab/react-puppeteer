@@ -6,8 +6,10 @@
   "main": "./index.js",
   "type": "module",
   "scripts": {
-    "format":"",
-    "check-format":""
+    "build": "rollup --config rollup.config.js",
+    "format": "prettier --write .",
+    "check-format": "git diff --exit-code",
+    "prepare": "husky"
   },
   "dependencies": {
     "crypto": "^1.0.1",
