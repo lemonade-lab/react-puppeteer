@@ -1,0 +1,42 @@
+{
+  "name": "react-puppeteer",
+  "version": "1.0.0-rc.0",
+  "author": "ningmengchongshui",
+  "description": "截图React组件",
+  "main": "./index.js",
+  "type": "module",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "lodash-es": "^4.17.21",
+    "node-schedule": "^2.1.1",
+    "puppeteer": "^22.11.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "files": [
+    "index.js",
+    "types",
+    ".puppeteerrc.cjs",
+    "main.css",
+    "react-puppeteer-env.d.ts"
+  ],
+  "types": "types",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./.puppeteerrc": {
+      "require": "./.puppeteerrc.cjs"
+    },
+    "./env": {
+      "types": "./react-puppeteer-env.d.d.ts"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "engines": {
+    "node": ">=16.14.0"
+  }
+}

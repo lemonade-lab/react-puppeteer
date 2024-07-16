@@ -1,0 +1,10 @@
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Local env files
+.env.*
+!.env.example
