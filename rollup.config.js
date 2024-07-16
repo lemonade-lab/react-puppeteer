@@ -1,14 +1,13 @@
 import typescript from '@rollup/plugin-typescript'
-import multiEntry from '@rollup/plugin-multi-entry'
-const plugins = [typescript(), multiEntry()]
+const plugins = [typescript()]
 const onwarn = (warning, warn) => {
   if (warning.code === 'UNRESOLVED_IMPORT') return
   warn(warning)
 }
 const config = [
   {
-    input: 'backend/main.ts',
-    file: 'backend/index.js'
+    input: 'src/index.ts',
+    file: 'index.js'
   }
 ]
 export default config.map(item => ({

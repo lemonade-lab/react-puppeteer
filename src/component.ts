@@ -2,11 +2,16 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { basename, join } from 'path'
-import { getLink } from './link.tsx'
+import { getLink } from './link'
 import { createHash } from 'crypto'
 import { ComponentCreateOpsionType } from './types.ts'
 
-export function PathsCss(htmlContent) {
+/**
+ *
+ * @param htmlContent
+ * @returns
+ */
+export function PathsCss(htmlContent: string) {
   const regex = /(src|href|url)\s*=\s*["']([^"']*\\[^"']*)["']/g
   htmlContent = htmlContent.replace(regex, (_, p1, p2) => {
     const correctedPath = p2.replace(/\\/g, '/')
@@ -68,32 +73,35 @@ export class Component {
       return `url(${p0})`
     }
 
-    /**
-     * 解析
-     */
-    for (const url of options.html_files) {
-      // 解析样式文件
-      if (/(.css|.less|.sass)$/) {
-        try {
-          // 得到解析后的字符
-          const data = readFileSync(url, 'utf-8').replace(
-            /url\("@([^"]*)"\)|url\('@([^']*)'\)/g,
-            callback
-          )
-          // 使用哈希生产 - 确保根据 url 和内容来生产资源，避免同名资源
-          const str = createHash('md5')
-            .update(`${url}:${data.substring(0, 12)}`)
-            .digest('hex')
-          const dir = join(this.#dir, 'css', `${str}.${basename(url)}`)
-          // 写入文件。
-          writeFileSync(dir, this.replacePaths(data), 'utf-8')
-          // 携带
-          options.html_head = `<link rel="stylesheet" href="${dir}" />${options?.html_head ?? ''}`
-        } catch (err) {
-          console.warn(err)
+    if (Array.isArray(options.html_files)) {
+      /**
+       * 解析
+       */
+      for (const url of options.html_files) {
+        // 解析样式文件
+        if (/(.css|.less|.sass)$/) {
+          try {
+            // 得到解析后的字符
+            const data = readFileSync(url, 'utf-8').replace(
+              /url\("@([^"]*)"\)|url\('@([^']*)'\)/g,
+              callback
+            )
+            // 使用哈希生产 - 确保根据 url 和内容来生产资源，避免同名资源
+            const str = createHash('md5')
+              .update(`${url}:${data.substring(0, 12)}`)
+              .digest('hex')
+            const dir = join(this.#dir, 'css', `${str}.${basename(url)}`)
+            // 写入文件。
+            writeFileSync(dir, this.replacePaths(data), 'utf-8')
+            // 携带
+            options.html_head = `<link rel="stylesheet" href="${dir}" />${options?.html_head ?? ''}`
+          } catch (err) {
+            console.warn(err)
+          }
         }
       }
     }
+
     return options
   }
 
