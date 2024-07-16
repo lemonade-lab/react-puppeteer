@@ -5,7 +5,7 @@
 - install
 
 ```sh
-npm install react-puppeteer
+npm install react puppeteer react-puppeteer
 ```
 
 - react-puppeteer-env.d.ts
@@ -13,7 +13,6 @@ npm install react-puppeteer
 ```ts
 /// <reference types="react-puppeteer/env" />
 ```
-
 
 ```ts
 import React from 'react'
