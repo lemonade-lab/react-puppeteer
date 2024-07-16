@@ -17,8 +17,8 @@ npm install react puppeteer react-puppeteer
 ```ts
 import React from 'react'
 import { Picture } from 'react-puppeteer'
-import Hello, { PropsType } from './hello.tsx'
-export class Image extends Picture {
+import HelpComponent from './MyHelp.tsx'
+export class ScreenshotPicture extends Picture {
     constructor() {
         // 继承实例
         super()
@@ -31,16 +31,16 @@ export class Image extends Picture {
      * @param Props
      * @returns
      */
-    createHello(uid: number, Props: PropsType) {
+    getHelp(uid: number, Props: Parameters<typeof HelpComponent.default>[0]) {
         // 生成 html 地址 或 html字符串
-        const Address = this.Com.create(<Hello {...Props} />, {
+        return this.Pup.screenshot(<HelpComponent {...Props} />, {
             // html/hello/uid.html
             join_dir: 'hello',
             html_name: `${uid}.html`,
         })
-        return this.Pup.render(Address)
     }
+
 }
 // 初始化 图片生成对象
-export const imgae = new Image()
+export const Imgae = new ScreenshotPicture()
 ```
