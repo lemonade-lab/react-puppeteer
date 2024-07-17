@@ -13,7 +13,8 @@
 - install
 
 ```sh
-npm install react puppeteer react-puppeteer
+npm install yarn@1.12.1 -g
+yarn add react puppeteer react-puppeteer -W
 ```
 
 - react-puppeteer-env.d.ts
@@ -179,7 +180,6 @@ export class ScreenshotPicture extends Picture {
 export const Link = () => {
   return (
     <>
-      <link rel="stylesheet" href={require('../../resources/css/output.css')} />
       <link rel="stylesheet" href={require('../../resources/css/hello.css')} />
     </>
   )
@@ -266,4 +266,147 @@ export class ScreenshotPicture extends Picture {
     // 在外部资源中使用别名引用
     background-image: url("@example/resources/exp.png");
 }
+```
+
+## tailwindcss
+
+可以跟talwindcss结合，生产css后，引入到head组件
+
+```sh
+yarn add tailwind preline -W
+```
+
+- input.css
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+- tailwind.config.js
+
+```js
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+/**
+ * @type {import('tailwindcss').Config}
+ */
+export default {
+  // 内容
+  content: ['node_modules/preline/dist/*.js', 'src/**/*.{jsx.tsx.html}'],
+  plugins: [
+    // 组件库  https://preline.co/
+    require('preline/plugin')
+  ]
+}
+```
+
+- output
+
+`npx` 本地 `-i` 输入 `-o` 输出 `-m` 压缩
+
+```sh
+npx tailwindcss -i ./input.css -o ./output.css -m
+```
+
+- link.tsx
+
+```tsx
+import React from 'react'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+export const Link = () => {
+  return (
+    <>
+      <link rel="stylesheet" href={require('./output.css')} />
+    </>
+  )
+}
+```
+
+## 解析inport image
+
+```sh
+yarn add rollup-plugin-img -W
+```
+
+- rollup.config.js
+
+```ts
+import image from 'rollup-plugin-img'
+/**
+ * @type {import("rollup").RollupOptions[]}
+ */
+export default [
+  {
+    plugins: [
+      // 图片
+      image({
+        // 转换
+        limit: 1024 * 8 * 1000, // default (8*1000 k)
+        // 排除
+        exclude: 'node_modules/**'
+      })
+    ]
+  }
+]
+```
+
+- use
+
+```tsx
+import url from './test.png'
+const Show = () => {
+  return <img src={url} />
+}
+```
+
+## 抽离css文件
+
+- add
+
+```sh
+yarn add rollup-plugin-css-only -W
+```
+
+- main.css
+
+```css
+.test {
+  background-color: aliceblue;
+}
+```
+
+- link.tsx
+
+```tsx
+import React from 'react'
+import { createRequire } from 'module'
+// 引入出发触发
+import './css/main.css'
+// 编译后确保写在head css
+const require = createRequire(import.meta.url)
+export const Link = () => {
+  return (
+    <>
+      <link rel="stylesheet" href={require('./main.css')} />
+    </>
+  )
+}
+```
+
+- rollup.config.js
+
+```ts
+import css from 'rollup-plugin-css-only'
+/**
+ * @type {import("rollup").RollupOptions[]}
+ */
+export default [
+  {
+    plugins: [css({ output: 'main.css' })]
+  }
+  // 将需要排除的模块添加到这里
+]
 ```
