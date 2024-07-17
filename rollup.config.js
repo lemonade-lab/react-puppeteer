@@ -1,6 +1,6 @@
 import image from 'rollup-plugin-img'
 import typescript from '@rollup/plugin-typescript'
-import css from 'rollup-plugin-css-only'
+import { copyFileSync } from 'fs'
 
 /**
  * @type {import("rollup").RollupOptions[]}
@@ -20,8 +20,6 @@ export default [
         declaration: true,
         declarationDir: 'types'
       }),
-      // 解析出 css 文件，并输入到指定位置
-      css({ output: 'main.css' }),
       // 图片
       image({
         // 转换
@@ -32,3 +30,5 @@ export default [
     ]
   }
 ]
+
+copyFileSync('./src/main.css', './main.css')

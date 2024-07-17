@@ -53,3 +53,11 @@ export type ComponentCreateOpsionType = {
    */
   server?: boolean
 }
+
+/**
+ *
+ */
+export type RouterType = {
+  url: string
+  options?: ComponentCreateOpsionType
+}[]

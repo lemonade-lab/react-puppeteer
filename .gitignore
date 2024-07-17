@@ -1,12 +1,13 @@
 # Node dependencies
 node_modules
 
-.env
+/.env
 
-yarn.lock
+/yarn.lock
 
-index.js
+/index.js
 
-types
+/types
 
-main.css
+
+/main.css

@@ -82,6 +82,37 @@ import { Screenshot } from ''
 const img: Buffer | false = await Screenshot.getHelp(123456, {})
 ```
 
+## 开发启动
+
+```sh
+node --no-warnings=ExperimentalWarning --loader ts-node/esm server.ts
+```
+
+- server.ts
+
+```ts
+import { createServer } from 'react-puppeteer'
+await createServer()
+```
+
+- routes.config.tsx
+
+```tsx
+import React from 'react'
+import { defineConfig } from 'react-puppeteer'
+const Music = () => {
+  return <div> 我的音乐</div>
+}
+export default defineConfig([
+  {
+    url: '/music',
+    options: {
+      html_body: <Music />
+    }
+  }
+])
+```
+
 ## 扩展功能
 
 > VScode 安装插件 `Path Intellisense`
@@ -360,53 +391,4 @@ import url from './test.png'
 const Show = () => {
   return <img src={url} />
 }
-```
-
-## 抽离css文件
-
-- add
-
-```sh
-yarn add rollup-plugin-css-only -W
-```
-
-- main.css
-
-```css
-.test {
-  background-color: aliceblue;
-}
-```
-
-- link.tsx
-
-```tsx
-import React from 'react'
-import { createRequire } from 'module'
-// 引入出发触发
-import './css/main.css'
-// 编译后确保写在head css
-const require = createRequire(import.meta.url)
-export const Link = () => {
-  return (
-    <>
-      <link rel="stylesheet" href={require('./main.css')} />
-    </>
-  )
-}
-```
-
-- rollup.config.js
-
-```ts
-import css from 'rollup-plugin-css-only'
-/**
- * @type {import("rollup").RollupOptions[]}
- */
-export default [
-  {
-    plugins: [css({ output: 'main.css' })]
-  }
-  // 将需要排除的模块添加到这里
-]
 ```
