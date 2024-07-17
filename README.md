@@ -14,33 +14,43 @@ npm install react puppeteer react-puppeteer
 /// <reference types="react-puppeteer/env" />
 ```
 
+- use
+
+```tsx
+import React from 'react'
+export default () => {
+  return <div> hello React ! </div>
+}
+```
+
 ```ts
 import React from 'react'
 import { Picture } from 'react-puppeteer'
 import HelpComponent from './MyHelp.tsx'
 export class ScreenshotPicture extends Picture {
-    constructor() {
-        // 继承实例
-        super()
-        // 启动
-        this.Pup.start()
-    }
-    /**
-     *
-     * @param uid
-     * @param Props
-     * @returns
-     */
-    getHelp(uid: number, Props: Parameters<typeof HelpComponent.default>[0]) {
-        // 生成 html 地址 或 html字符串
-        return this.Pup.screenshot(<HelpComponent {...Props} />, {
-            // html/hello/uid.html
-            join_dir: 'hello',
-            html_name: `${uid}.html`,
-        })
-    }
+  constructor() {
+      // 继承实例
+      super()
+      // 启动
+      this.Pup.start()
+  }
+  /**
+   *
+   * @param uid
+   * @param Props
+   * @returns
+   */
+  getHelp(uid: number, Props: Parameters<typeof HelpComponent.default>[0]) {
+      // 生成 html 地址 或 html字符串
+      return this.screenshot({
+          // html/hello/uid.html
+          join_dir: 'hello',
+          html_name: `${uid}.html`,
+          html_body: <HelpComponent {...Props} />
+      })
+  }
 
 }
 // 初始化 图片生成对象
-export const Imgae = new ScreenshotPicture()
+export const Screenshot = new ScreenshotPicture()
 ```

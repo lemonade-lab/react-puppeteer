@@ -1,8 +1,8 @@
-// CSS modules
-type CSSModuleClasses = { readonly [key: string]: string }
-
 // CSS
-declare module '*.css' {}
+declare module '*.css' {
+  const classes: { [key: string]: string }
+  export default classes
+}
 
 // images
 declare module '*.apng' {

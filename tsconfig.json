@@ -43,7 +43,11 @@
     "noFallthroughCasesInSwitch": true,
     // 确保进口套管正确。
     "forceConsistentCasingInFileNames": true,
-    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "5.0",
+    /* Create source map files for emitted JavaScript files. */
+    "sourceMap": true,
+    /* Allow 'import x from y' when a module doesn't have a default export. */
+    "allowSyntheticDefaultImports": true
   },
   "ts-node": {
     // 启用本机 ESM 支持.
@@ -52,5 +56,6 @@
     "transpileOnly": true,
     // 就像节点的--experimental-specifier-resolution
     "experimentalSpecifierResolution": "node"
-  }
+  },
+  "include": ["src", "react-puppeteer-env.d.ts"]
 }

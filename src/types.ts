@@ -28,25 +28,18 @@ export type ComponentCreateOpsionType = {
    */
   file_create?: boolean
   /**
-   * head组件
-   */
-  head_component?: React.ReactNode
-  /**
-   * body组件
-   */
-  body_component?: React.ReactNode
-  /**
    * 插入内容到head
    */
-  html_head?: string
+  html_head?: React.ReactNode
   /**
    * 插入内容到body
    */
-  html_body?: string
+  html_body?: React.ReactNode
   /**
    * 当且仅当设置别名配置时生效
    * 对别名资源进行解析并植入到html中
    * 目前仅处理css文件
+   * 效果等同 <head> <link /> </head>
    */
   html_files?: string[]
   /**

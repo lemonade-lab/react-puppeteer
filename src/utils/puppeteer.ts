@@ -1,6 +1,6 @@
 import { type PuppeteerLaunchOptions } from 'puppeteer'
 import puppeteer, { Browser } from 'puppeteer'
-import { ScreenshotFileOptions } from './types.js'
+import { ScreenshotFileOptions } from '../types.js'
 
 /**
  * 无头浏览器
@@ -12,7 +12,6 @@ export class Puppeteer {
   #restart = 200
   // 状态
   #isBrowser = false
-
   // 配置
   #launch: PuppeteerLaunchOptions = {
     // 禁用超时

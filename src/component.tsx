@@ -2,7 +2,7 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { basename, join } from 'path'
-import { getLink } from './link'
+import { Link } from './components/link.tsx'
 import { createHash } from 'crypto'
 import { ComponentCreateOpsionType } from './types.ts'
 
@@ -30,11 +30,9 @@ export function PathsCss(htmlContent: string) {
  * **********
  */
 export class Component {
-  #Link = getLink()
+  //
   #dir = ''
-  /**
-   *
-   */
+  //
   constructor() {
     this.#dir = join(process.cwd(), 'data', 'component')
     mkdirSync(join(this.#dir, 'css'), {
@@ -72,7 +70,7 @@ export class Component {
       }
       return `url(${p0})`
     }
-
+    let html_head = options.html_head
     if (Array.isArray(options.html_files)) {
       /**
        * 解析
@@ -93,16 +91,20 @@ export class Component {
             const dir = join(this.#dir, 'css', `${str}.${basename(url)}`)
             // 写入文件。
             writeFileSync(dir, this.replacePaths(data), 'utf-8')
-            // 携带
-            options.html_head = `<link rel="stylesheet" href="${dir}" />${options?.html_head ?? ''}`
+            //
+            html_head = (
+              <>
+                <link rel="stylesheet" href={dir} />
+                {html_head ?? ''}
+              </>
+            )
           } catch (err) {
             console.warn(err)
           }
         }
       }
     }
-
-    return options
+    return html_head
   }
 
   /**
@@ -110,7 +112,7 @@ export class Component {
    * @param options
    * @returns
    */
-  #compile(options: ComponentCreateOpsionType) {
+  compile(options: ComponentCreateOpsionType) {
     /**
      * html_files
      */
@@ -119,30 +121,21 @@ export class Component {
       options?.html_files &&
       Array.isArray(options.html_files)
     ) {
-      options = this.#rewriteFiles(options)
+      // 修正 head
+      options.html_head = this.#rewriteFiles(options)
     }
-
-    /**
-     * body_component
-     */
-    if (options.body_component) {
-      const str = renderToString(options.body_component)
-      options.html_body = `${str}${options.html_body}`
-    }
-    /**
-     * head_component
-     */
-    if (options.head_component) {
-      const str = renderToString(options.head_component)
-      options.html_head = `${str}${options.html_head}`
-    }
-    /**
-     * html
-     */
     const DOCTYPE = '<!DOCTYPE html>'
-    const head = `<head>${this.#Link}${options?.html_head ?? ''}</head>`
-    const body = `<body>${options?.html_body ?? ''}</body>`
-    const html = `${DOCTYPE}<html>${head}${body}</html>`
+    const HTML = renderToString(
+      <html>
+        <head>
+          {' '}
+          <Link />
+          {options?.html_head ?? ''}
+        </head>
+        <body>{options?.html_body ?? ''}</body>
+      </html>
+    )
+    const html = `${DOCTYPE}${HTML}`
     /**
      * create false
      */
@@ -169,37 +162,11 @@ export class Component {
   }
 
   /**
-   * 渲染字符串
-   * @param element
-   * @param name
-   * @returns
-   */
-  create(element: React.ReactNode, options: ComponentCreateOpsionType) {
-    const str = renderToString(element)
-    return this.#compile({
-      ...options,
-      html_body: `${str ?? ''}${options?.html_body ?? ''}`
-    })
-  }
-
-  /**
-   * 路径格式转换
+   * 辅助函数：替换路径
    * @param htmlContent
    * @returns
    */
-  replacePaths(htmlContent: string) {
-    // 正则表达式匹配 src、href 和 url 中的路径
-    const regex = /(src|href|url)\s*=\s*["']([^"']*\\[^"']*)["']/g
-    htmlContent = htmlContent.replace(regex, (_, p1, p2) => {
-      const correctedPath = p2.replace(/\\/g, '/')
-      return `${p1}="${correctedPath}"`
-    })
-    const cssUrlRegex = /url\(["']?([^"'\)\\]*\\[^"'\)]*)["']?\)/g
-    return htmlContent.replace(cssUrlRegex, (_, p1) => {
-      const correctedPath = p1.replace(/\\/g, '/')
-      return `url(${correctedPath})`
-    })
-  }
+  replacePaths = PathsCss
 
   /**
    * 辅助函数：替换路径
@@ -214,19 +181,5 @@ export class Component {
         '/file'
       )
     )
-  }
-
-  /**
-   * 将 React 元素渲染为其初始 HTML。这
-   * 应该只在服务器上使用。
-   * React 将返回一个 HTML 字符串。
-   * 您可以使用此方法在服务器上生成 HTML 并在初始请求上发送标记，
-   * 以加快页面加载速度并允许搜索 出
-   * 于 SEO 目的而抓取您的页面的引擎。
-   * 如果你打电话ReactDOMClient.hydrateRoot()在已经具有此服务器渲染标记的节点上，
-   * React 将保留它并仅附加事件处理程序，允许您 获得非常高性能的首次加载体验。
-   */
-  get render() {
-    return renderToString
   }
 }

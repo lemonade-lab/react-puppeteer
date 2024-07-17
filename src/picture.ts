@@ -1,6 +1,6 @@
 import { PuppeteerLaunchOptions } from 'puppeteer'
 import { Component } from './component'
-import { Puppeteer } from './puppeteer'
+import { Puppeteer } from './utils/puppeteer'
 import { ComponentCreateOpsionType } from './types'
 /**
  * 截图类
@@ -28,11 +28,8 @@ export class Picture {
    * @param options
    * @returns
    */
-  async screenshot(
-    element: React.ReactNode,
-    options: ComponentCreateOpsionType
-  ) {
-    const Address = this.Com.create(element, options)
+  async screenshot(options: ComponentCreateOpsionType) {
+    const Address = this.Com.compile(options)
     if (
       typeof options.file_create == 'boolean' &&
       options.file_create === false
