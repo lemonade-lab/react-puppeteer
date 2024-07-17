@@ -1,6 +1,6 @@
 {
   "name": "react-puppeteer",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "author": "ningmengchongshui",
   "description": "截图React组件",
   "main": "./index.js",
@@ -12,8 +12,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "crypto": "^1.0.1",
-    "lodash-es": "^4.17.21"
+    "crypto": "^1.0.1"
   },
   "devDependencies": {
     "rollup-plugin-css-only": "^4.5.2",
