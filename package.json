@@ -1,6 +1,6 @@
 {
   "name": "react-puppeteer",
-  "version": "1.0.0-rc.6",
+  "version": "1.0.0-rc.7",
   "author": "ningmengchongshui",
   "description": "截图React组件",
   "main": "./index.js",
@@ -59,7 +59,7 @@
       "require": "./.puppeteerrc.cjs"
     },
     "./env": {
-      "types": "./react-puppeteer-env.d.d.ts"
+      "types": "./react-puppeteer-env.d.ts"
     }
   },
   "publishConfig": {
