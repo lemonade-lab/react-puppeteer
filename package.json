@@ -1,6 +1,6 @@
 {
   "name": "react-puppeteer",
-  "version": "1.0.0-rc.5",
+  "version": "1.0.0-rc.6",
   "author": "ningmengchongshui",
   "description": "截图React组件",
   "main": "./index.js",

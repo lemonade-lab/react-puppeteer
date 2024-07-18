@@ -17,8 +17,10 @@ export default [
     plugins: [
       // ts编译
       typescript({
-        declaration: true,
-        declarationDir: 'types'
+        compilerOptions: {
+          declaration: true,
+          declarationDir: 'types'
+        }
       }),
       // 图片
       image({
