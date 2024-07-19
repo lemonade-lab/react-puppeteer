@@ -56,7 +56,8 @@
       "types": "./types/index.d.ts"
     },
     "./.puppeteerrc": {
-      "require": "./.puppeteerrc.cjs"
+      "require": "./.puppeteerrc.cjs",
+      "types": "./.puppeteerrc.d.ts"
     },
     "./env": {
       "types": "./react-puppeteer-env.d.ts"
