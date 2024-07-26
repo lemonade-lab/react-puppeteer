@@ -1,5 +1,5 @@
 import React from 'react'
-import { defineConfig } from './src/index.js'
+import { defineConfig } from 'react-puppeteer'
 const Music = () => {
   return <div> 我的音乐</div>
 }

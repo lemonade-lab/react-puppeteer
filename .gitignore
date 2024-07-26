@@ -1,13 +1,17 @@
 # Node dependencies
 node_modules
 
-/.env
-
+## dev
 /yarn.lock
+/lib
 
-/index.js
+# Logs
+logs
+*.log
 
-/types
+# Local env files
+.env.*
+!.env.example
 
 
-/main.css
+/data

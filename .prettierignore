@@ -1,6 +1,10 @@
 # Node dependencies
 node_modules
 
+## dev
+/yarn.lock
+/lib
+
 # Logs
 logs
 *.log
@@ -8,3 +12,5 @@ logs
 # Local env files
 .env.*
 !.env.example
+
+/data

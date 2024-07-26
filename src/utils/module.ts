@@ -3,6 +3,24 @@
  * @returns
  */
 const now = () => `?t=${Date.now()}`
+
+/**
+ * 使用import.meta.url得到require
+ * @param basePath
+ * @returns
+ * 这并不是
+ * ***
+ * import { createRequire } from "module"
+ * ***
+ * 原型为
+ * new URL(path, import.meta.url).href
+ */
+export const createRequire = (basePath: string) => {
+  const require = (path: string): string =>
+    new URL(path, basePath).href.replace(/^file:\/\//, '')
+  return require
+}
+
 /**
  * ***********
  * 创建动态组件

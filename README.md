@@ -85,10 +85,20 @@ const img: Buffer | false = await Screenshot.getHelp(123456, {})
 ## 开发启动
 
 ```sh
-node --no-warnings=ExperimentalWarning --loader ts-node/esm server.ts
+yarn add nodemon -D
 ```
 
-- server.ts
+- nodemon.json
+
+```json
+{
+  "exec": "node --no-warnings=ExperimentalWarning --loader ts-node/esm routes.server.ts",
+  "ext": "js,json,ts,jsx,tsx",
+  "watch": ["src"]
+}
+```
+
+- routes.server.ts
 
 ```ts
 import { createServer } from 'react-puppeteer'
@@ -113,48 +123,23 @@ export default defineConfig([
 ])
 ```
 
+- dev
+
+```sh
+npx nodemon
+```
+
 ## 扩展功能
 
 > VScode 安装插件 `Path Intellisense`
-
-### 动态组件
-
-```ts
-import * as hellos from './hello.tsx'
-import { createDynamicComponent } from 'react-puppeteer'
-const dynamic = createDynamicComponent(import.meta.url)
-/**
- *
- * 该方法可被重复执行
- * 并触发dynamic重新加载
- * @param Props
- * @returns
- */
-async function DynamicHello(Props: Parameters<typeof hellos.default>[0]) {
-  const Hello = (await dynamic<typeof hellos>('./hello.tsx')).default
-  return <Hello {...Props} />
-}
-```
-
-使用`createDynamicComponent`将创建一个动态组件.
-
-当前脚本再执行时,其内部关联的所有动态组件都将再次被重新执行.
-
-:::danger 警告
-
-动态组件是危险的,请确保他仅用于包裹一个可预测的纯组件.
-如果组件内额外的执行代码，都将触发重复执行.
-生产环境下，即env.NODE_ENV=='production'下，禁用动态模块。
-
-:::
 
 ### 文件引入
 
 ```ts
 import React from "react";
-import { createRequire } from "module";
 import { BackgroundImage } from 'react-puppeteer'
-const require = createRequire(import.meta.url);
+import { createRequire } from 'react-puppeteer'
+const require = createRequire(import.meta.url)
 export default function App() {
   return (
     <>
@@ -208,9 +193,12 @@ export class ScreenshotPicture extends Picture {
 ### 元素插入
 
 ```tsx title="./link.tsx"
+import { createRequire } from 'react-puppeteer'
+const require = createRequire(import.meta.url)
 export const Link = () => {
   return (
     <>
+      <script src={require('../../resources/js/hello.js')} />
       <link rel="stylesheet" href={require('../../resources/css/hello.css')} />
     </>
   )
@@ -268,6 +256,9 @@ export default () => <div className="show-image"></div>
 ```tsx
 import { dirname, join } from 'path'
 import ImageComponent from './views/image.tsx'
+
+import { createRequire } from 'react-puppeteer'
+const require = createRequire(import.meta.url)
 
 // 别名路径
 export const paths = {
@@ -345,7 +336,7 @@ npx tailwindcss -i ./input.css -o ./output.css -m
 
 ```tsx
 import React from 'react'
-import { createRequire } from 'module'
+import { createRequire } from 'react-puppeteer'
 const require = createRequire(import.meta.url)
 export const Link = () => {
   return (
