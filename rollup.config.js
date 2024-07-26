@@ -1,5 +1,4 @@
 import typescript from '@rollup/plugin-typescript'
-import { copyFileSync, mkdirSync } from 'fs'
 // import { randomUUID } from 'crypto';
 // import { dirname, join, relative } from 'path';
 /**
@@ -35,11 +34,3 @@ export default [
     ]
   }
 ]
-
-// 确保目录存在
-mkdirSync('./lib', {
-  recursive: true
-})
-
-// copy 资源 - 确保资源路径正确
-copyFileSync('./src/main.css', './lib/main.css')

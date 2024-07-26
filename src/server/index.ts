@@ -37,6 +37,7 @@ export async function createServer(Port = 8080) {
   // 不存在
   if (!routes) return
 
+  console.log('_______react-puppeteer_______')
   for (const route of routes) {
     console.log(`http://127.0.0.1:${Port}${route.url}`)
     router.get(route.url, async ctx => {
@@ -69,12 +70,8 @@ export async function createServer(Port = 8080) {
 
   // listen 8000
   app.listen(Port, () => {
-    console.log('______________')
     console.log('Server is running on port ' + Port)
-    console.log('______________')
     console.log('自行调整默认浏览器尺寸 800 X 1280 100%')
-    console.log('如果需要运行时重新计算className')
-    console.log('请确保一直打开此程序')
-    console.log('______________')
+    console.log('_______react-puppeteer_______')
   })
 }

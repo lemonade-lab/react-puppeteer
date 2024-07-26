@@ -1,5 +1,5 @@
 {
-  "exec": "node --no-warnings=ExperimentalWarning --loader ts-node/esm routes.server.ts",
+  "exec": "yarn build && yarn server",
   "ext": "js,json,ts,jsx,tsx",
   "watch": ["src"]
 }

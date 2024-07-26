@@ -1,12 +1,13 @@
 {
   "name": "react-puppeteer",
-  "version": "1.0.0-rc.8",
+  "version": "1.0.0",
   "author": "ningmengchongshui",
   "description": "截图React组件",
   "main": "./lib/index.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon --config nodemon.json",
+    "server": "node --no-warnings=ExperimentalWarning --loader ts-node/esm routes.server.ts",
     "build": "rollup --config rollup.config.js",
     "format": "prettier --write .",
     "check-format": "git diff --exit-code",
@@ -42,6 +43,8 @@
     "typescript": "^5.0.4"
   },
   "files": [
+    "public",
+    "public/main.css",
     "lib",
     ".puppeteerrc.cjs",
     "react-puppeteer-env.d.ts"

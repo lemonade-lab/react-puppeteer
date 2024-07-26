@@ -1,5 +1,6 @@
 import React from 'react'
-import { MainCSS } from '../css.url'
+import { createRequire } from '../utils/module.js'
+const require = createRequire(import.meta.url)
 /**
  * 得到基础link组件
  * @returns
@@ -7,7 +8,7 @@ import { MainCSS } from '../css.url'
 export const Link = () => {
   return (
     <>
-      <link rel="stylesheet" href={MainCSS} />
+      <link rel="stylesheet" href={require('../../public/main.css')} />
     </>
   )
 }
