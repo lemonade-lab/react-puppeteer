@@ -8,6 +8,8 @@ import { existsSync } from 'fs'
 
 const PATH = process.cwd().replace(/\\/g, '\\\\')
 
+const state = '/file'
+
 /**
  *
  * @param Router
@@ -38,6 +40,7 @@ export async function createServer(Port = 8080) {
   if (!routes) return
 
   console.log('_______react-puppeteer_______')
+  //
   for (const route of routes) {
     console.log(`http://127.0.0.1:${Port}${route.url}`)
     router.get(route.url, async ctx => {
@@ -63,7 +66,7 @@ export async function createServer(Port = 8080) {
   }
 
   // static
-  app.use(mount('/file', KoaStatic(PATH)))
+  app.use(mount(state, KoaStatic(PATH)))
 
   // routes
   app.use(router.routes())

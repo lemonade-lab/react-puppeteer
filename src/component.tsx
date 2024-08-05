@@ -6,8 +6,11 @@ import { Link } from './components/link.tsx'
 import { createHash } from 'crypto'
 import { ComponentCreateOpsionType } from './types.ts'
 
+//
+const state = '/file'
+
 /**
- *
+ * 解析路径
  * @param htmlContent
  * @returns
  */
@@ -128,7 +131,6 @@ export class Component {
     const HTML = renderToString(
       <html>
         <head>
-          {' '}
           <Link />
           {options?.html_head ?? ''}
         </head>
@@ -143,21 +145,27 @@ export class Component {
       typeof options?.file_create == 'boolean' &&
       options?.file_create == false
     ) {
+      // is server  启动 server 解析
       if (options.server === true) return this.replaceServerPaths(html)
+      //
       return this.replacePaths(html)
     }
     /**
      * create true
      */
     const dir = join(this.#dir, options?.join_dir ?? '')
+    // mkdir
     mkdirSync(dir, { recursive: true })
+    // url
     const address = join(dir, options?.html_name ?? 'hello.html')
+    // write
     writeFileSync(
       address,
       options.server === true
         ? this.replaceServerPaths(html)
         : this.replacePaths(html)
     )
+    // url
     return address
   }
 
@@ -173,13 +181,24 @@ export class Component {
    * @param htmlContent
    * @returns
    */
-  replaceServerPaths = (htmlContent: string) => {
-    // 置换成 /file请求
-    return this.replacePaths(
-      htmlContent.replace(
-        new RegExp(process.cwd().replace(/\\/g, '\\\\'), 'g'),
-        '/file'
-      )
-    )
+  replaceServerPaths = htmlContent => {
+    const cwd = process.cwd().replace(/\\/g, '\\/')
+    // linux adn mac
+    if (
+      process.platform === 'linux' ||
+      process.platform === 'android' ||
+      process.platform === 'darwin'
+    ) {
+      const arg = new RegExp(cwd, 'g')
+      // html
+      return this.replacePaths(htmlContent.replace(arg, state))
+    } else {
+      // windows
+      const arg7 = new RegExp(`\\\/${cwd}`, 'g')
+      // html
+      return this.replacePaths(htmlContent.replace(arg7, state))
+    }
   }
+
+  //
 }

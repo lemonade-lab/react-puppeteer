@@ -1,4 +1,3 @@
-import './utils/require.js'
 export * from './utils/puppeteer.js'
 export * from './types.js'
 export * from './component'

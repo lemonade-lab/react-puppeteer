@@ -135,6 +135,8 @@ npx nodemon
 
 ### 文件引入
 
+`createRequire` 请确保引入的是项目目录下的文件
+
 ```ts
 import React from "react";
 import { BackgroundImage } from 'react-puppeteer'
