@@ -8,13 +8,14 @@
 
 > VScode 安装插件 `ES7+ React/Redux/React-Native snippets`
 
-## 使用教程
-
-- install
+## 环境准备
 
 ```sh
-npm install yarn@1.12.1 -g
-yarn add react puppeteer react-puppeteer -W
+npm init -y
+npm install yarn@1.19.1 -g
+yarn add ts-node -D
+yarn add typescript -D
+yarn add react -W
 ```
 
 - react-puppeteer-env.d.ts
@@ -36,9 +37,56 @@ yarn add react puppeteer react-puppeteer -W
 module.exports = require('react-puppeteer/.puppeteerrc')
 ```
 
+- tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "jsx": "react",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "allowJs": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "typeRoots": ["node_modules/@types"],
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "5.0"
+  },
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true,
+    "experimentalSpecifierResolution": "node"
+  },
+  "include": ["src/**/", "react-puppeteer.env.d.ts"]
+}
+```
+
+## 使用教程
+
+- install
+
+```sh
+yarn add puppeteer react-puppeteer -W
+```
+
 - use
 
 ```tsx
+// src/Word.tsx
 import React from 'react'
 export default () => {
   return <div> hello React ! </div>
@@ -46,6 +94,7 @@ export default () => {
 ```
 
 ```ts
+// src/image.tsx
 import React from 'react'
 import { Picture } from 'react-puppeteer'
 import HelpComponent from './MyHelp.tsx'
@@ -77,12 +126,19 @@ export class ScreenshotPicture extends Picture {
 export const Screenshot = new ScreenshotPicture()
 ```
 
-```ts title="./apps.ts"
-import { Screenshot } from ''
+```ts
+// src/index.ts
+import { Screenshot } from '.'
 const img: Buffer | false = await Screenshot.getHelp(123456, {})
 ```
 
-## 开发启动
+- run
+
+```sh
+node --no-warnings=ExperimentalWarning --loader ts-node/esm src/index.ts
+```
+
+## 本地调试
 
 ```sh
 yarn add nodemon -D
@@ -95,6 +151,14 @@ yarn add nodemon -D
   "exec": "node --no-warnings=ExperimentalWarning --loader ts-node/esm routes.server.ts",
   "ext": "js,json,ts,jsx,tsx",
   "watch": ["src"]
+}
+```
+
+- tsconfig.json
+
+```json
+{
+  "include": ["routes.server.ts", "routes.config.tsx"]
 }
 ```
 
@@ -290,6 +354,57 @@ export class ScreenshotPicture extends Picture {
     // 在外部资源中使用别名引用
     background-image: url("@example/resources/exp.png");
 }
+```
+
+## 编译tsx
+
+- 安装打包环境
+
+```sh
+yarn add rollup -D
+yarn add @rollup/plugin-terser -D
+yarn add @rollup/plugin-typescript -D
+```
+
+- rollup.config.js
+
+```js
+import typescript from '@rollup/plugin-typescript'
+/**
+ * @type {import("rollup").RollupOptions[]}
+ */
+export default [
+  {
+    // src 目录
+    input: './src/index.ts',
+    output: {
+      // lib 目录
+      dir: 'lib',
+      format: 'es',
+      sourcemap: false,
+      // 保持结构
+      preserveModules: true
+    },
+    plugins: [
+      typescript({
+        compilerOptions: {
+          declaration: true,
+          declarationDir: 'lib'
+        }
+      })
+    ],
+    onwarn: (warning, warn) => {
+      // 忽略与无法解析the导入相关the警告信息
+      if (warning.code === 'UNRESOLVED_IMPORT') return
+      // 继续使用默认the警告处理
+      warn(warning)
+    }
+  }
+]
+```
+
+```sh
+nxp rollup --config rollup.config.js
 ```
 
 ## tailwindcss
