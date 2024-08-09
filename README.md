@@ -18,25 +18,6 @@ yarn add typescript -D
 yarn add react -W
 ```
 
-- react-puppeteer-env.d.ts
-
-> 扩展类型声明
-
-```ts
-/// <reference types="react-puppeteer/env" />
-```
-
-- .puppeteerrc.cjs
-
-> 自动搜索浏览器内核
-
-```cjs
-/**
- * @type {import("puppeteer").Configuration}
- */
-module.exports = require('react-puppeteer/.puppeteerrc')
-```
-
 - tsconfig.json
 
 ```json
@@ -71,7 +52,7 @@ module.exports = require('react-puppeteer/.puppeteerrc')
     "transpileOnly": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": ["src/**/", "react-puppeteer.env.d.ts"]
+  "include": ["src/**/*"]
 }
 ```
 
@@ -81,6 +62,33 @@ module.exports = require('react-puppeteer/.puppeteerrc')
 
 ```sh
 yarn add puppeteer react-puppeteer -W
+```
+
+- react-puppeteer-env.d.ts
+
+> 扩展类型声明
+
+```ts
+/// <reference types="react-puppeteer/env" />
+```
+
+- tsconfig.json
+
+```json
+{
+  "include": ["react-puppeteer.env.d.ts"]
+}
+```
+
+- .puppeteerrc.cjs
+
+> 自动搜索浏览器内核
+
+```cjs
+/**
+ * @type {import("puppeteer").Configuration}
+ */
+module.exports = require('react-puppeteer/.puppeteerrc')
 ```
 
 - use
@@ -128,8 +136,11 @@ export const Screenshot = new ScreenshotPicture()
 
 ```ts
 // src/index.ts
-import { Screenshot } from '.'
+import { Screenshot } from './image.tsx'
 const img: Buffer | false = await Screenshot.getHelp(123456, {})
+if (img) {
+  // 可fs保存到本地
+}
 ```
 
 - run
@@ -412,7 +423,7 @@ nxp rollup --config rollup.config.js
 可以跟talwindcss结合，生产css后，引入到head组件
 
 ```sh
-yarn add tailwind preline -W
+yarn add tailwind -W
 ```
 
 - input.css
@@ -433,11 +444,8 @@ const require = createRequire(import.meta.url)
  */
 export default {
   // 内容
-  content: ['node_modules/preline/dist/*.js', 'src/**/*.{jsx.tsx.html}'],
-  plugins: [
-    // 组件库  https://preline.co/
-    require('preline/plugin')
-  ]
+  content: ['src/**/*.{jsx.tsx.html}'],
+  plugins: []
 }
 ```
 
